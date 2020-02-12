@@ -35,7 +35,7 @@ public class NeighbourServiceTest {
         List<Neighbour> expectedNeighbours = DummyNeighbourGenerator.DUMMY_NEIGHBOURS;
         assertThat(neighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(Objects.requireNonNull(expectedNeighbours.toArray())));
     }
-//TODO supression d'un voisin de la liste des voisin et de la liste des favoris
+//TODO delete neighbour to neighnourg list and favorit list
     @Test
     public void deleteNeighbourWithSuccess() {
         Neighbour neighbourToDelete = service.getNeighbours().get(0);
@@ -44,14 +44,14 @@ public class NeighbourServiceTest {
         assertFalse(service.getFavorites().contains(neighbourToDelete));
     }
 
-// TODO supression du voisin de la liste des favoris
+// TODO remove neighbour to favorite list
     @Test
     public void deleteNeighbourFavWithSuccess() {
         Neighbour neighbour = service.getFavorites().get(0);
         service.deleteFavorite(neighbour);
         assertFalse(service.getFavorites().contains(neighbour));
     }
-//TODO ajout du voisin dans la lsite des favoris
+//TODO add neighbour to favorite list
     @Test
     public void getNeighbourFavoriWithSuccess() {
         Neighbour lNeighbourAdd = service.getNeighbours().get(2);

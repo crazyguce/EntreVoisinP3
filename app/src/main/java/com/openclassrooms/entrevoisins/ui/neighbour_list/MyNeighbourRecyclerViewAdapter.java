@@ -1,8 +1,6 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +42,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_neighbour, parent, false);
+                .inflate(R.layout.item_neighbour, parent, false);
         context = parent.getContext();
         return new ViewHolder(view);
     }

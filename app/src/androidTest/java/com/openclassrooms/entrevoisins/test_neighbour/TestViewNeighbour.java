@@ -22,7 +22,7 @@ import static org.hamcrest.core.AllOf.allOf;
 /**
  * craeate by Bailleul Tanguy on 06/01/2020.
  */
-public class test_view_neighbour {
+public class TestViewNeighbour {
     @Rule
     public ActivityTestRule<ListNeighbourActivity> mListNeighbourActivityActivityTestRule =
             new ActivityTestRule<>(ListNeighbourActivity.class);

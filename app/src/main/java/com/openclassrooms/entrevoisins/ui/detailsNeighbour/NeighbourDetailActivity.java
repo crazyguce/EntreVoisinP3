@@ -85,7 +85,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
 
     /**
-     * Ajout du voisin dans la liste des favoris
+     * add neighnour to favorite list
      * @param view
      */
     public void editFavorite(View view) {
@@ -94,7 +94,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             mApiService.deleteFavorite(mNeighbour);
         }
         else {
-            mApiService.getFavorites().add(mNeighbour);
+            mApiService.addFavorite(mNeighbour);
         }
         initFavoriteView(!isFavorite);
 
