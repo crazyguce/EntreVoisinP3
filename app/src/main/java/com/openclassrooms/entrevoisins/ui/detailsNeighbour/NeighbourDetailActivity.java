@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static com.openclassrooms.entrevoisins.model.Neighbour.NEIGHBOUR_EXTRA;
 
@@ -97,6 +100,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             mApiService.addFavorite(mNeighbour);
         }
         initFavoriteView(!isFavorite);
+        
 
 
     }
@@ -121,8 +125,14 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home :
+                finish();
+                return  true;
+        }
 
-
-
-
+        return super.onOptionsItemSelected(item);
+    }
 }

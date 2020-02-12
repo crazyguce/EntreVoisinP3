@@ -29,6 +29,7 @@ public class NeighbourFragment extends Fragment {
     private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
     private boolean isFavorit;
+    private MyNeighbourRecyclerViewAdapter mAdapter;
 
 
     /**
@@ -74,8 +75,10 @@ public class NeighbourFragment extends Fragment {
         }
         else {
             mNeighbours = mApiService.getNeighbours();
+
         }
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -104,4 +107,13 @@ public class NeighbourFragment extends Fragment {
         }
         initList();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       if (mAdapter!= null){
+           mAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
