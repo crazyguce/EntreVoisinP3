@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
+import com.openclassrooms.entrevoisins.events.RefreshNeighbourgsEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
@@ -48,9 +49,11 @@ public class NeighbourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mApiService = DI.getNeighbourApiService();
         if(getArguments() != null && getArguments().containsKey(IS_FAVORIT_EXTRA)){
             isFavorit = getArguments().getBoolean(IS_FAVORIT_EXTRA);
+
         }
     }
 
@@ -81,15 +84,10 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
@@ -108,9 +106,8 @@ public class NeighbourFragment extends Fragment {
         initList();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    @Subscribe
+    public void onRefreshNeighbourgsEvent(RefreshNeighbourgsEvent event) {
        if (mAdapter!= null){
            mAdapter.notifyDataSetChanged();
         }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.events.RefreshNeighbourgsEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
@@ -89,23 +90,22 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     /**
      * add neighnour to favorite list
+     *
      * @param view
      */
     public void editFavorite(View view) {
         boolean isFavorite = isFavorite(mNeighbour);
-        if(isFavorite){
+        if (isFavorite) {
             mApiService.deleteFavorite(mNeighbour);
-        }
-        else {
+        } else {
             mApiService.addFavorite(mNeighbour);
         }
         initFavoriteView(!isFavorite);
-        
-
+        EventBus.getDefault().post(new RefreshNeighbourgsEvent());
 
     }
 
-   private boolean isFavorite(Neighbour neighbour){
+    private boolean isFavorite(Neighbour neighbour) {
 
         for (Neighbour favorite : mApiService.getFavorites()) {
             if (neighbour.getId().equals(favorite.getId())) {
@@ -115,22 +115,22 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         return false;
 
     }
-    private void initFavoriteView(boolean IsFAvorite){
-        if (IsFAvorite){
+
+    private void initFavoriteView(boolean IsFAvorite) {
+        if (IsFAvorite) {
             mStar.setImageResource(R.drawable.ic_star_yellow);
 
-        }
-        else {
+        } else {
             mStar.setImageResource(R.drawable.ic_star_white_24dp);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home :
+        switch (item.getItemId()) {
+            case android.R.id.home:
                 finish();
-                return  true;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

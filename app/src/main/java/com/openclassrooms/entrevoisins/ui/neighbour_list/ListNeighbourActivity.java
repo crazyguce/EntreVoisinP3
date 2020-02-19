@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.events.RefreshNeighbourgsEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +46,7 @@ public class ListNeighbourActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         // 3 - Design purpose. Tabs have the same width
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-
-
-
     }
+
 }
+
