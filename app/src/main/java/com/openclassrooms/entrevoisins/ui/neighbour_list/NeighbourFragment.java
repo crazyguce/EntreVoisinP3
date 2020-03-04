@@ -20,6 +20,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,13 +36,14 @@ public class NeighbourFragment extends Fragment {
 
     /**
      * Create and return a new instance
-     * @return @{@link NeighbourFragment}
+     *
      * @param isFavorit
+     * @return @{@link NeighbourFragment}
      */
     public static NeighbourFragment newInstance(boolean isFavorit) {
         NeighbourFragment fragment = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean(IS_FAVORIT_EXTRA , isFavorit);
+        bundle.putBoolean(IS_FAVORIT_EXTRA, isFavorit);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,9 +52,11 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        mNeighbours = new ArrayList<>();
         mApiService = DI.getNeighbourApiService();
-        if(getArguments() != null && getArguments().containsKey(IS_FAVORIT_EXTRA)){
+        if (getArguments() != null && getArguments().containsKey(IS_FAVORIT_EXTRA)) {
             isFavorit = getArguments().getBoolean(IS_FAVORIT_EXTRA);
+
 
         }
     }
@@ -64,7 +68,7 @@ public class NeighbourFragment extends Fragment {
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         initList();
         return view;
     }
@@ -73,15 +77,18 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
-        if (isFavorit){
-            mNeighbours = mApiService.getFavorites();
+        mNeighbours.clear();
+        if (isFavorit) {
+            mNeighbours.addAll(mApiService.getFavorites());
+        } else {
+            mNeighbours.addAll(mApiService.getNeighbours());
         }
-        else {
-            mNeighbours = mApiService.getNeighbours();
-
+        if (mAdapter == null) {
+            mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
 
@@ -93,14 +100,14 @@ public class NeighbourFragment extends Fragment {
 
     /**
      * Fired if the user clicks on a delete button
+     *
      * @param event
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        if (isFavorit){
+        if (isFavorit) {
             mApiService.deleteFavorite(event.neighbour);
-        }
-        else{
+        } else {
             mApiService.deleteNeighbour(event.neighbour);
         }
         initList();
@@ -108,9 +115,7 @@ public class NeighbourFragment extends Fragment {
 
     @Subscribe
     public void onRefreshNeighbourgsEvent(RefreshNeighbourgsEvent event) {
-       if (mAdapter!= null){
-           mAdapter.notifyDataSetChanged();
-        }
+        initList();
     }
 
 }
